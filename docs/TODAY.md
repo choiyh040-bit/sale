@@ -18,7 +18,7 @@
 - [ ] **P0-1** 파이썬 가상환경 생성 및 활성화 (`python -m venv .venv`)
 - [ ] **P0-2** `requirements.txt` 작성하고 설치 (anthropic, pillow, python-dotenv, requests)
 - [ ] **P0-3** Anthropic 콘솔에서 API 키 발급 → `.env` 에 `ANTHROPIC_API_KEY=` 저장
-- [ ] **P0-4** `.env` 가 git에 안 올라가는지 `git status` 로 눈으로 확인
+- [x] **P0-4** `.env` 가 git에 안 올라가는지 `git status` 로 눈으로 확인 ✅ 완료
 - [ ] **P0-5** `scripts/hello.py` 작성 — Claude에 "안녕" 보내고 답 받기
 - [ ] **P0-6** 실행 성공 → 커밋 (일지가 자동 생성되는지 확인)
 
@@ -34,7 +34,10 @@
 
 작업하면서 여기에 한 줄씩 남깁니다. 시각 + 무슨 일이 있었는지.
 
-- `HH:MM` —
+- `16:5x` — Phase 0 착수 전, 작업 기준부터 세움. 계획서 3종(MASTER_PLAN / TODAY / 작업일지 양식) 작성.
+- `16:5x` — SessionStart 훅 + git commit 자동 일지 훅 구축, 3가지 케이스(생성/중복차단/무시) 검증 완료.
+- `16:5x` — `.env` 가 git에 안 올라가는 것 확인 (**P0-4 선행 완료**).
+- `16:5x` — Gemini 원안의 오류 2건 확인 및 계획서에 반영 (모델명 구버전 / 인스타 댓글 링크 클릭 불가).
 
 ---
 

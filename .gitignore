@@ -1,0 +1,29 @@
+# 비밀값 — 절대 커밋 금지
+.env
+.env.local
+*.key
+*.pem
+credentials.json
+token.json
+
+# 파이썬
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# 생성 결과물
+output/
+*.mp4
+assets/character/*.png
+!assets/character/README.md
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code 로컬 설정 (개인 설정은 공유하지 않음)
+.claude/settings.local.json

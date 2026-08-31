@@ -16,8 +16,13 @@ INPUT="$(cat)"
 CMD="$(printf '%s' "$INPUT" | jq -r '.tool_input.command // ""' 2>/dev/null || echo "")"
 
 # git commit 이 아니면 조용히 종료
+#
+# 주의: "git commit" 을 붙은 글자로 찾으면 안 된다.
+#   git -c user.name=... commit  처럼 중간에 옵션이 끼는 형태를 놓친다.
+#   git 과 commit 사이에 뭐가 있어도 잡히도록 느슨하게 매칭한다.
+#   느슨해서 생기는 오탐은 아래 해시 중복검사가 걸러준다.
 case "$CMD" in
-  *"git commit"*) ;;
+  *git*commit*) ;;
   *) exit 0 ;;
 esac
 

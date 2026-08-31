@@ -15,12 +15,17 @@
 
 작게 쪼갭니다. 한 항목은 **30분~1시간 안에 끝나는 크기**로.
 
-- [ ] **P0-1** 파이썬 가상환경 생성 및 활성화 (`python -m venv .venv`)
-- [ ] **P0-2** `requirements.txt` 작성하고 설치 (anthropic, pillow, python-dotenv, requests)
-- [ ] **P0-3** Anthropic 콘솔에서 API 키 발급 → `.env` 에 `ANTHROPIC_API_KEY=` 저장
-- [x] **P0-4** `.env` 가 git에 안 올라가는지 `git status` 로 눈으로 확인 ✅ 완료
-- [ ] **P0-5** `scripts/hello.py` 작성 — Claude에 "안녕" 보내고 답 받기
-- [ ] **P0-6** 실행 성공 → 커밋 (일지가 자동 생성되는지 확인)
+> 🖥 = **내 데스크톱에서 직접** 해야 하는 것 (원격 세션에서는 대신 못 함)
+> 💻 = Claude Code가 파일로 만들어 둔 것 (받아서 쓰면 됨)
+
+- [ ] 🖥 **P0-1** 파이썬 가상환경 생성 및 활성화 (`python -m venv .venv`)
+- [x] 💻 **P0-2a** `requirements.txt` 작성 ✅ (4개 패키지 설치까지 검증 완료)
+- [ ] 🖥 **P0-2b** 로컬에서 `pip install -r requirements.txt`
+- [ ] 🖥 **P0-3** Anthropic 콘솔에서 API 키 발급 → `.env` 에 `ANTHROPIC_API_KEY=` 저장
+- [x] **P0-4** `.env` 가 git에 안 올라가는지 확인 ✅ 완료
+- [x] 💻 **P0-5a** `scripts/hello.py` 작성 ✅ (에러 처리 3경로 검증 완료)
+- [ ] 🖥 **P0-5b** 로컬에서 `python scripts/hello.py` 실행 → Claude 응답 받기
+- [ ] **P0-6** 성공하면 커밋 (일지 자동 생성 확인)
 
 ### 오늘 안 할 것 (중요)
 욕심내면 반드시 아무것도 못 끝냅니다. 오늘은 아래 손대지 않습니다.
@@ -38,6 +43,10 @@
 - `16:5x` — SessionStart 훅 + git commit 자동 일지 훅 구축, 3가지 케이스(생성/중복차단/무시) 검증 완료.
 - `16:5x` — `.env` 가 git에 안 올라가는 것 확인 (**P0-4 선행 완료**).
 - `16:5x` — Gemini 원안의 오류 2건 확인 및 계획서에 반영 (모델명 구버전 / 인스타 댓글 링크 클릭 불가).
+- `--` — 기본 브랜치를 `main` 으로 정리. 자동생성 브랜치 삭제 완료. PR은 불필요하다고 판단(혼자 작업, 합칠 대상 없음).
+- `--` — `requirements.txt` 작성. 가상환경에 실제 설치해서 검증 (anthropic 1.2.0 / pillow 12.3.0 / dotenv 1.2.3 / requests 2.34.2).
+- `--` — `scripts/hello.py` 작성. 키 없음 / 예시값 그대로 / 형식 오류 3가지 경로가 전부 친절한 안내를 내고 exit 1 하는 것 확인.
+- `--` — **실제 API 호출은 안 함.** 키가 유효한지는 로컬에서 님이 직접 확인해야 하는 부분(P0-5b).
 
 ---
 

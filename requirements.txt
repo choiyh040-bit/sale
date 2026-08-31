@@ -1,0 +1,12 @@
+# 설치:  pip install -r requirements.txt
+# (가상환경을 먼저 활성화한 뒤에 실행하세요)
+
+# --- Phase 0~1: 콘티 생성 ---
+anthropic>=1.2,<2        # Claude API 공식 SDK
+python-dotenv>=1.0       # .env 파일에서 API 키 읽기
+
+# --- Phase 2: 말풍선 합성 ---
+pillow>=11.0             # 이미지에 텍스트/말풍선 얹기
+
+# --- Phase 3~5: 이미지 생성 API, 인스타 발행 ---
+requests>=2.32           # HTTP 요청

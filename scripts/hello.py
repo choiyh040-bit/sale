@@ -1,11 +1,11 @@
 """
-Claude API 연결 확인용 스크립트. (Phase 0 - P0-5)
+Gemini API 연결 확인용 스크립트. (Phase 0)
 
-이 스크립트가 성공하면 Phase 0 이 끝납니다.
-여기서 확인하는 것은 딱 세 가지입니다.
-  1. .env 파일을 제대로 읽는가
-  2. API 키가 유효한가
-  3. Claude 에게 요청을 보내고 답을 받아오는가
+이 스크립트가 성공하면 Phase 0 이 끝난다.
+확인하는 것은 세 가지다.
+  1. API 키를 제대로 읽는가
+  2. 키가 유효한가
+  3. Gemini 에게 요청을 보내고 답을 받아오는가
 
 실행:
     python scripts/hello.py
@@ -14,66 +14,68 @@ Claude API 연결 확인용 스크립트. (Phase 0 - P0-5)
 import os
 import sys
 
-from dotenv import load_dotenv
+# .env 도 읽지만, 이 컨테이너는 세션이 끝나면 사라지므로
+# 키는 '환경 설정의 환경변수' 로 넣는 것이 맞다.
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
-# 프로젝트 루트의 .env 를 읽어 환경변수로 올립니다.
-load_dotenv()
+MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
-api_key = os.getenv("ANTHROPIC_API_KEY")
-
-# --- 1단계: 키가 있는지 --------------------------------------------------
+# --- 1단계: 키가 있는지 ----------------------------------------------------
 if not api_key:
-    print("❌ ANTHROPIC_API_KEY 를 찾을 수 없습니다.")
+    print("❌ GEMINI_API_KEY 를 찾을 수 없습니다.")
     print()
     print("   해결 순서:")
-    print("   1) cp .env.example .env        (Windows: copy .env.example .env)")
-    print("   2) https://console.anthropic.com 에서 API 키를 발급받습니다.")
-    print("   3) .env 를 열어 ANTHROPIC_API_KEY= 뒤에 그 키를 붙여넣습니다.")
+    print("   1) 폰 브라우저로 https://aistudio.google.com 접속 → API 키 발급")
+    print("   2) 그 키를 '환경 설정 → 환경변수' 에 GEMINI_API_KEY 로 등록")
+    print("   ⚠️  키를 채팅창에 붙여넣지 마세요. 대화 기록에 영구히 남습니다.")
     sys.exit(1)
 
-# 예시값을 그대로 둔 경우를 잡아냅니다. (초보자가 가장 자주 하는 실수)
-if "여기에" in api_key or not api_key.startswith("sk-ant-"):
-    print("❌ .env 의 키가 아직 예시값이거나 형식이 이상합니다.")
-    print(f"   현재 값: {api_key[:12]}...")
-    print("   실제 키는 'sk-ant-' 로 시작합니다. console.anthropic.com 에서 확인하세요.")
+if "여기에" in api_key or len(api_key) < 20:
+    print("❌ 키가 예시값이거나 너무 짧습니다.")
+    print(f"   현재 값의 앞부분: {api_key[:10]}...")
     sys.exit(1)
 
-# --- 2단계: Claude 에게 인사 ---------------------------------------------
-import anthropic
+# --- 2단계: Gemini 에게 인사 -----------------------------------------------
+try:
+    from google import genai
+except ImportError:
+    print("❌ google-genai 가 설치되어 있지 않습니다.")
+    print("   pip install -r requirements.txt")
+    sys.exit(1)
 
-client = anthropic.Anthropic()  # ANTHROPIC_API_KEY 를 자동으로 읽습니다
-
-print("Claude 에게 인사를 보내는 중...")
+client = genai.Client(api_key=api_key)
+print(f"Gemini 에게 인사를 보내는 중... (모델: {MODEL})")
 
 try:
-    response = client.messages.create(
-        model="claude-opus-5",
-        max_tokens=200,
-        messages=[{"role": "user", "content": "안녕! 한 문장으로 짧게 인사해줘."}],
+    response = client.models.generate_content(
+        model=MODEL,
+        contents="안녕! 한 문장으로 짧게 인사해줘.",
     )
-except anthropic.AuthenticationError:
-    print("❌ 키가 거부되었습니다 (401).")
-    print("   .env 의 ANTHROPIC_API_KEY 값을 다시 확인하세요. 앞뒤 공백이나 따옴표가 붙어있지 않은지도요.")
-    sys.exit(1)
-except anthropic.RateLimitError:
-    print("❌ 요청이 너무 잦습니다 (429). 잠시 후 다시 실행하세요.")
-    sys.exit(1)
-except anthropic.APIConnectionError as e:
-    print(f"❌ 네트워크 연결에 실패했습니다: {e}")
-    print("   인터넷 연결과 방화벽/VPN 설정을 확인하세요.")
-    sys.exit(1)
-except anthropic.APIStatusError as e:
-    print(f"❌ API 오류 (HTTP {e.status_code}): {e.message}")
+except Exception as e:
+    msg = str(e)
+    print(f"❌ 실패: {msg}")
+    print()
+    if "API_KEY_INVALID" in msg or "401" in msg or "403" in msg:
+        print("   키가 거부되었습니다. 앞뒤 공백이나 따옴표가 붙어있지 않은지 확인하세요.")
+    elif "404" in msg or "not found" in msg.lower():
+        print("   모델 이름이 맞지 않습니다. 쓸 수 있는 이름을 확인하세요:")
+        print("      python scripts/make_toon.py --list-models")
+        print("   그다음 환경변수 GEMINI_MODEL 로 지정하세요.")
+    elif "429" in msg or "RESOURCE_EXHAUSTED" in msg:
+        print("   호출 한도를 넘었습니다. 잠시 후 다시 실행하세요.")
+    else:
+        print("   네트워크 연결을 확인하세요.")
     sys.exit(1)
 
-# --- 3단계: 결과 출력 -----------------------------------------------------
-text = "".join(block.text for block in response.content if block.type == "text")
-
+# --- 3단계: 결과 출력 ------------------------------------------------------
 print()
-print("✅ 성공! Claude 응답:")
-print(f"   {text}")
+print("✅ 성공! Gemini 응답:")
+print(f"   {response.text.strip()}")
 print()
-print(f"   모델   : {response.model}")
-print(f"   토큰   : 입력 {response.usage.input_tokens} / 출력 {response.usage.output_tokens}")
-print()
-print("Phase 0 의 마지막 확인이 끝났습니다. TODAY.md 의 P0-5 를 체크하세요.")
+print("Phase 0 완료입니다. 다음:")
+print('   python scripts/make_toon.py "겨울 온열매트"')

@@ -28,8 +28,8 @@
       ⚠️ 채팅창에 붙여넣지 말 것 — 대화 기록에 영구히 남음
 
 **B. 코드 전환 (제가 함)**
-- [ ] 🤖 **P0-B1** `requirements.txt` 를 Gemini SDK(`google-genai`) 기준으로 교체
-- [ ] 🤖 **P0-B2** `scripts/hello.py` 를 Gemini 호출로 전환 (키 없을 때 안내는 그대로 유지)
+- [x] 🤖 **P0-B1** `requirements.txt` → `google-genai` 2.20.0 교체 ✅ 설치 검증 완료
+- [x] 🤖 **P0-B2** `scripts/hello.py` Gemini 전환 ✅ 키 없을 때 안내 동작 확인
 - [ ] 🤖 **P0-B3** 컨테이너에서 실제 실행 → 응답 받는 것 확인 → **Phase 0 완료**
 
 **폐기된 항목** (로컬 PC 전제였음)
@@ -66,6 +66,8 @@
 - `--` — MASTER_PLAN 에 4-4절(작업 환경 제약) 추가, Phase 0/6 완료조건 수정.
 - `--` — **첫 콘티를 손으로 제작** (키워드: 겨울 온열매트, 6컷). API 미사용.
   결과물에서 `toon.json` 스키마 v1 을 뽑아내 `docs/TOON_SCHEMA.md` 로 문서화. **P1-1 완료.**
+- `--` — **Phase 1 콘티 생성기 코드 완성** (P1-2·P1-3·P1-4). 프롬프트 + Gemini 구조화 출력 + 검증기.
+  `selftest.py` 로 API 없이 16개 항목 검증 통과. 허위광고 필터의 한글 수사 구멍(`천원`, `두 배`) 발견해 보강.
 - `--` — **Phase 2 말풍선 합성기 완성.** OFL 한글 폰트 3종 확보, `compose.py`·`contact_sheet.py` 작성.
   6컷 전부 합성 성공. 하단 말풍선이 고지 문구를 덮는 버그를 회귀 테스트로 잡아 수정.
 
@@ -100,9 +102,9 @@
 <summary>다음 Phase 미리보기 (Phase 1 — 콘티 생성기)</summary>
 
 - [x] P1-1 `toon.json` 스키마 확정 ✅ (손으로 만든 1호에서 역으로 뽑아냄)
-- [ ] P1-2 콘티 생성 프롬프트 초안 작성
-- [ ] P1-3 `scripts/make_toon.py` — 키워드 받아 Claude 호출
-- [ ] P1-4 출력이 항상 유효한 JSON이 되도록 구조화 출력 적용
+- [x] P1-2 콘티 생성 프롬프트 작성 ✅ `prompts/toon_prompt.md`
+- [x] P1-3 `scripts/make_toon.py` 작성 ✅ (Gemini. 실호출 검증은 키 필요)
+- [x] P1-4 구조화 출력(response_schema) 적용 ✅
 - [ ] P1-5 키워드 3개로 테스트, 결과 품질 눈으로 확인
 
 </details>

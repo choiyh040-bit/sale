@@ -13,8 +13,10 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 
-# 생성 결과물
+# 생성 결과물 (스크립트로 다시 만들 수 있으므로 커밋하지 않음)
 output/
+content/*/out/
+content/*/art/
 *.mp4
 assets/character/*.png
 !assets/character/README.md

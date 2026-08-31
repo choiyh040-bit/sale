@@ -43,6 +43,11 @@ SUBJECT="$(git log -1 --pretty=%s 2>/dev/null)"
 FILES="$(git show --stat --oneline --name-only --pretty=format: HEAD 2>/dev/null | sed '/^$/d' | head -20)"
 [ -n "$FILES" ] || FILES="(변경 파일 없음)"
 
+# 일지만 고친 커밋에는 일지를 또 만들지 않는다.
+#   일지를 채워서 커밋 → 그 커밋이 또 일지를 만듦 → 무한 반복. 이걸 끊는다.
+NON_LOG="$(printf '%s\n' "$FILES" | grep -v '^logs/worklog/' | sed '/^$/d')"
+[ -n "$NON_LOG" ] || exit 0
+
 # 오늘 몇 번째 일지인지
 SEQ="$(printf '%02d' "$(( $(ls -1 logs/worklog/"$DATE"-*.md 2>/dev/null | wc -l) + 1 ))")"
 

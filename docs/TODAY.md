@@ -64,6 +64,8 @@
 - `--` — 컨테이너 네트워크 확인: Gemini API·Anthropic API **도달 가능**,
   `aistudio.google.com`(키 발급 페이지)은 **차단** → 폰 브라우저로 발급받아야 함.
 - `--` — MASTER_PLAN 에 4-4절(작업 환경 제약) 추가, Phase 0/6 완료조건 수정.
+- `--` — **첫 콘티를 손으로 제작** (키워드: 겨울 온열매트, 6컷). API 미사용.
+  결과물에서 `toon.json` 스키마 v1 을 뽑아내 `docs/TOON_SCHEMA.md` 로 문서화. **P1-1 완료.**
 
 ---
 
@@ -95,7 +97,7 @@
 <details>
 <summary>다음 Phase 미리보기 (Phase 1 — 콘티 생성기)</summary>
 
-- [ ] P1-1 `toon.json` 스키마 확정 (컷 수, 필드명)
+- [x] P1-1 `toon.json` 스키마 확정 ✅ (손으로 만든 1호에서 역으로 뽑아냄)
 - [ ] P1-2 콘티 생성 프롬프트 초안 작성
 - [ ] P1-3 `scripts/make_toon.py` — 키워드 받아 Claude 호출
 - [ ] P1-4 출력이 항상 유효한 JSON이 되도록 구조화 출력 적용

@@ -43,9 +43,11 @@ SUBJECT="$(git log -1 --pretty=%s 2>/dev/null)"
 FILES="$(git show --stat --oneline --name-only --pretty=format: HEAD 2>/dev/null | sed '/^$/d' | head -20)"
 [ -n "$FILES" ] || FILES="(변경 파일 없음)"
 
-# 일지만 고친 커밋에는 일지를 또 만들지 않는다.
-#   일지를 채워서 커밋 → 그 커밋이 또 일지를 만듦 → 무한 반복. 이걸 끊는다.
-NON_LOG="$(printf '%s\n' "$FILES" | grep -v '^logs/worklog/' | sed '/^$/d')"
+# 기록용 파일만 고친 커밋에는 일지를 또 만들지 않는다.
+#   일지를 채우고 TODAY.md 를 갱신해서 커밋 → 그 커밋이 또 일지를 만듦 → 무한 반복.
+#   일지(logs/worklog/)와 오늘의 할일(docs/TODAY.md)은 "작업의 기록"이지 "작업" 자체가 아니다.
+#   이 둘만 바뀐 커밋은 분기점으로 치지 않는다.
+NON_LOG="$(printf '%s\n' "$FILES" | grep -Ev '^(logs/worklog/|docs/TODAY\.md$)' | sed '/^$/d')"
 [ -n "$NON_LOG" ] || exit 0
 
 # 오늘 몇 번째 일지인지

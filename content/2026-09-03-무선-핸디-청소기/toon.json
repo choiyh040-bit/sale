@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "id": "2026-09-03-무선-핸디-청소기",
+    "keyword": "무선 핸디 청소기",
+    "created_at": "2026-09-03",
+    "made_by": "gemini",
+    "schema_version": 1,
+    "status": "draft"
+  },
+  "product": {
+    "name": "무선 핸디 청소기",
+    "category": "",
+    "affiliate": {
+      "platform": "coupang",
+      "url": "",
+      "landing": "linkinbio",
+      "note": "인스타 캡션·댓글의 URL은 클릭이 안 된다. 반드시 프로필 링크로 유도할 것."
+    }
+  },
+  "plan": {
+    "persona": "자취 2년 차, 퇴근 후 손가락 하나 까딱하기 싫은 귀차니즘 직장인",
+    "pain": "머리카락이나 과자 부스러기 같은 미세한 먼지가 보일 때마다 크고 무거운 유선 청소기를 꺼내오기 너무 귀찮음",
+    "hook": "침대나 책상 위에 떨어진 머리카락 한 가닥을 보고 귀찮아하는 공감 상황",
+    "angle": "무겁게 청소기 끌고 다닐 필요 없이 필요할 때 1초 만에 슥 해결하는 해방감",
+    "cta": "프로필 링크에서 삶의 질 수직 상승하는 꿀템을 확인해보세요"
+  },
+  "character": {
+    "ref": "assets/character/main_front.png",
+    "prompt_prefix": "webtoon style, flat vector illustration, clean bold outlines, Korean webtoon aesthetic, single consistent character: a young Korean woman with a messy bun hairstyle, wearing a cozy oversized cream-colored sweatshirt"
+  },
+  "format": {
+    "canvas": [
+      1080,
+      1350
+    ],
+    "cut_count": 6
+  },
+  "cuts": [
+    {
+      "n": 1,
+      "role": "hook",
+      "scene": "방안 침대 위, 떨어진 머리카락 몇 가닥을 발견하고 미간을 찌푸린 채 귀찮은 표정으로 쳐다보는 주인공. 전체적으로 어둡고 칙칙한 방 안 분위기.",
+      "dialogue": "아... 머리카락 왜 이렇게 잘 보여...",
+      "balloon": {
+        "pos": "top-left",
+        "tail": "down-right"
+      },
+      "image_prompt": "frustrated expression, looking down at a few hair strands on a bed, dim indoor lighting, cool shadows"
+    },
+    {
+      "n": 2,
+      "role": "problem",
+      "scene": "청소기를 꺼내기 싫어서 대충 맨손으로 쓸어 모으려 엎드려 있는 뒷모습.",
+      "dialogue": "대충 손으로 쓸어서 버려야지",
+      "balloon": {
+        "pos": "bottom-right",
+        "tail": "up-left"
+      },
+      "image_prompt": "kneeling on bed, trying to sweep hair with bare hand, looking lazy and annoyed, dark room"
+    },
+    {
+      "n": 3,
+      "role": "escalation",
+      "scene": "정전기 때문에 머리카락이 손에 달라붙고 사방으로 흩어져 멘탈이 나간 얼굴. 옷장 구석에 쳐박힌 거대한 무거운 청소기가 오버랩됨.",
+      "dialogue": "아악, 정전기 때문에 다 날아가!!",
+      "balloon": {
+        "pos": "top-right",
+        "tail": "down-left"
+      },
+      "image_prompt": "shocked and angry expression, hair static-clinging to fingers, messy surroundings, stressed mood"
+    },
+    {
+      "n": 4,
+      "role": "turn",
+      "scene": "책상 한구석에서 작고 깔끔한 무선 핸디 청소기를 집어 드는 손. 배경에 은은하게 노란빛이 돌기 시작함.",
+      "dialogue": "이제 무거운 청소기 안 꺼냄",
+      "balloon": {
+        "pos": "bottom-left",
+        "tail": "up-right"
+      },
+      "image_prompt": "holding a sleek, small white handheld cordless vacuum cleaner, soft warm lighting starting to appear"
+    },
+    {
+      "n": 5,
+      "role": "solution",
+      "scene": "핸디 청소기로 머리카락이 한 번에 싹 빨려 들어가는 모습을 보며 아주 개운하고 행복한 미소를 짓는 모습.",
+      "dialogue": "…………",
+      "balloon": {
+        "pos": "top-left",
+        "tail": "down-right"
+      },
+      "image_prompt": "smiling with deep satisfaction, vacuuming bed easily with one hand, bright and clean warm lighting"
+    },
+    {
+      "n": 6,
+      "role": "cta",
+      "scene": "침대 옆 협탁에 예쁘게 거치된 미니 청소기 옆에서 편안하게 누워 폰을 보며 힐링하는 주인공의 모습.",
+      "dialogue": "진작 살걸... 삶의 질 수직 상승!",
+      "balloon": {
+        "pos": "bottom-right",
+        "tail": "up-left"
+      },
+      "image_prompt": "peacefully relaxing on a clean bed, smiling, cozy and bright bedroom atmosphere, cute tiny vacuum docked on the side table"
+    }
+  ],
+  "caption": "눈에 밟히는 머리카락이랑 과자 부스러기 치우려고 매번 커다란 청소기 끌고 나오기 진짜 귀찮으셨죠? 🥲\n맨손으로 쓸다가 정전기 때문에 화만 잔뜩 났던 지난날은 안녕!\n가볍게 슥 집어서 1초 만에 해결하니까 방안이 항상 깔끔해요.\n역시 청소는 장비빨이 진리입니다👍\n\n귀차니즘을 해결해 줄 무선 핸디 청소기가 궁금하다면?\n지금 바로 프로필 링크를 확인해 보세요!",
+  "hashtags": [
+    "인스타툰",
+    "생활꿀팁",
+    "자취생필수품",
+    "무선청소기",
+    "핸디청소기",
+    "미니청소기",
+    "자취스타그램",
+    "귀차니즘"
+  ],
+  "disclosure": "이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따라 일정액의 수수료를 제공받습니다."
+}

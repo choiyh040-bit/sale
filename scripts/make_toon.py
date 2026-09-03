@@ -16,6 +16,7 @@ import json
 import os
 import re
 import sys
+import time
 from datetime import date
 from pathlib import Path
 
@@ -34,7 +35,11 @@ ROLES = ["hook", "problem", "escalation", "turn", "solution", "cta"]
 POSITIONS = ["top-left", "top-right", "bottom-left", "bottom-right"]
 TAILS = ["down-left", "down-right", "up-left", "up-right"]
 
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
+
+# 무료 등급에서는 최신 모델일수록 자주 붐빈다(503). 앞에서부터 순서대로 시도한다.
+# 맨 앞이 실패하면 다음 모델로 넘어가므로, 한 모델이 붐벼도 작업이 멈추지 않는다.
+FALLBACK_MODELS = ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-3.6-flash"]
 
 
 # --- Gemini 응답 형식 강제 --------------------------------------------------
@@ -238,6 +243,37 @@ def get_client():
     return genai.Client(api_key=key)
 
 
+def generate_with_fallback(client, model, contents, config):
+    """붐비는(503) / 너무 자주 부른(429) 경우를 넘기며 콘티를 받아온다.
+
+    같은 모델로 잠깐 기다렸다 다시 부르고, 그래도 안 되면 다음 모델로 넘어간다.
+    돌려주는 것은 (응답, 실제로 성공한 모델 이름).
+    """
+    tried = [model] + [m for m in FALLBACK_MODELS if m != model]
+    last = None
+
+    for name in tried:
+        for attempt in range(3):
+            try:
+                return client.models.generate_content(
+                    model=name, contents=contents, config=config
+                ), name
+            except Exception as e:
+                msg = str(e)
+                last = e
+                busy = "503" in msg or "UNAVAILABLE" in msg
+                too_fast = "429" in msg or "RESOURCE_EXHAUSTED" in msg
+                if not (busy or too_fast):
+                    raise            # 모델명 오류·키 오류는 재시도해도 소용없다
+                wait = 5 * (attempt + 1)
+                why = "붐빔" if busy else "호출이 너무 잦음"
+                print(f"   ({name} {why} — {wait}초 뒤 재시도)")
+                time.sleep(wait)
+        print(f"   → {name} 은 계속 실패. 다음 모델로 넘어갑니다.")
+
+    raise last
+
+
 def list_models():
     """쓸 수 있는 모델 이름을 출력한다. 모델명이 안 맞을 때 여기서 확인한다."""
     client = get_client()
@@ -274,15 +310,18 @@ def main():
     print(f"'{args.keyword}' 콘티를 {args.cuts}컷으로 만드는 중... (모델: {args.model})")
 
     try:
-        resp = client.models.generate_content(
-            model=args.model,
-            contents=f"상품 키워드: {args.keyword}\n컷 수: {args.cuts}컷",
-            config={
+        resp, used_model = generate_with_fallback(
+            client,
+            args.model,
+            f"상품 키워드: {args.keyword}\n컷 수: {args.cuts}컷",
+            {
                 "system_instruction": system,
                 "response_mime_type": "application/json",
                 "response_schema": RESPONSE_SCHEMA,
             },
         )
+        if used_model != args.model:
+            print(f"   ({args.model} 대신 {used_model} 로 만들었습니다)")
     except Exception as e:
         msg = str(e)
         print(f"❌ 생성 실패: {msg}")

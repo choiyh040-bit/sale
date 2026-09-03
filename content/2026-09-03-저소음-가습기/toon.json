@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "id": "2026-09-03-저소음-가습기",
+    "keyword": "저소음 가습기",
+    "created_at": "2026-09-03",
+    "made_by": "gemini",
+    "schema_version": 1,
+    "status": "draft"
+  },
+  "product": {
+    "name": "저소음 가습기",
+    "category": "",
+    "affiliate": {
+      "platform": "coupang",
+      "url": "",
+      "landing": "linkinbio",
+      "note": "인스타 캡션·댓글의 URL은 클릭이 안 된다. 반드시 프로필 링크로 유도할 것."
+    }
+  },
+  "plan": {
+    "persona": "환절기나 겨울철에 목이 건조해서 깨지만 예민해서 가습기 소음 때문에 잠을 못 이루는 2030 1인가구",
+    "pain": "가습기를 틀면 시끄러워서 잠을 설치고, 끄고 자면 목과 목구멍이 찢어질 듯 건조함",
+    "hook": "아침에 일어났을 때 목구멍에 모래가 가득 찬 듯한 고통과 불쾌감",
+    "angle": "소음 걱정 없이 조용하고 촉촉하게 꿀잠 자는 수면 환경 만들기",
+    "cta": "프로필 링크에서 무소음 가습기 정보 확인하기"
+  },
+  "character": {
+    "ref": "assets/character/main_front.png",
+    "prompt_prefix": "webtoon style, flat vector illustration, clean bold outlines, cozy color palette, Korean webtoon aesthetic, single consistent character: a 20-something Korean woman with a messy bun, wearing loose-fit cozy pajamas, wearing round glasses."
+  },
+  "format": {
+    "canvas": [
+      1080,
+      1350
+    ],
+    "cut_count": 6
+  },
+  "cuts": [
+    {
+      "n": 1,
+      "role": "hook",
+      "scene": "어두운 방 안, 잠에서 깨어나 목을 감싸 쥐며 고통스러워하는 주인공. 얼굴을 잔뜩 찌푸리고 있음.",
+      "dialogue": "아... 아침마다 목에 모래 들어간 느낌이야.",
+      "balloon": {
+        "pos": "top-left",
+        "tail": "down-right"
+      },
+      "image_prompt": "dark bedroom at dawn, a young Korean woman sitting up in bed, clutching her throat in pain, tired and painful facial expression, cool dark blue atmosphere"
+    },
+    {
+      "n": 2,
+      "role": "problem",
+      "scene": "건조함을 해결하기 위해 침대 옆 협탁에 있는 낡고 투박한 가습기를 켜는 모습.",
+      "dialogue": "건조해서 가습기 좀 틀고 자려는데...",
+      "balloon": {
+        "pos": "top-right",
+        "tail": "down-left"
+      },
+      "image_prompt": "dimly lit bedroom, she is turning on a bulky old plastic humidifier on her bedside table, annoyed expression, cool night atmosphere"
+    },
+    {
+      "n": 3,
+      "role": "escalation",
+      "scene": "침대에 누워 이불을 덮었으나, 가습기에서 나는 진동 소리와 물방울 떨어지는 소리 때문에 눈을 번쩍 뜨고 괴로워하는 모습.",
+      "dialogue": "우웅- 뚝뚝- 소리 때문에 잠을 못 자!!",
+      "balloon": {
+        "pos": "bottom-left",
+        "tail": "up-right"
+      },
+      "image_prompt": "close-up on her face on a pillow, eyes wide open in extreme frustration, dark shadows under her eyes, soundwave symbols near her ears, dark bedroom"
+    },
+    {
+      "n": 4,
+      "role": "turn",
+      "scene": "심플하고 세련된 저소음 가습기로 바꾼 모습. 가습기에서 아주 부드럽고 고운 미세 안개가 소리 없이 뿜어져 나옴. 방 분위기가 따뜻해짐.",
+      "dialogue": "소음 아예 없는 걸로 바꿨더니...",
+      "balloon": {
+        "pos": "top-left",
+        "tail": "down-right"
+      },
+      "image_prompt": "cozy bedroom with warm lighting, a sleek minimalist humidifier standing on the table silently emitting soft fine mist, she looks at it with curiosity and relief"
+    },
+    {
+      "n": 5,
+      "role": "solution",
+      "scene": "주인공이 이불을 폭 덮고 세상 편안하고 아늑한 표정으로 깊은 잠에 빠져 있는 모습. 방 전체가 따뜻하고 평온한 톤.",
+      "dialogue": "…………",
+      "balloon": {
+        "pos": "top-right",
+        "tail": "down-left"
+      },
+      "image_prompt": "extremely cozy warm bedroom atmosphere, she is sleeping soundly in a fluffy bed with a gentle, peaceful smile, soft ambient light, gentle mist drifting in the background"
+    },
+    {
+      "n": 6,
+      "role": "cta",
+      "scene": "아침 햇살이 들어오는 방에서 개운하게 기지개를 켜며 활짝 웃는 주인공.",
+      "dialogue": "이제 아침에 목 안 아픈 게 제일 행복해.",
+      "balloon": {
+        "pos": "bottom-left",
+        "tail": "up-right"
+      },
+      "image_prompt": "bright morning sunlight shining through a window, she is sitting on the bed stretching with a refreshed and happy smile, warm and joyful atmosphere"
+    }
+  ],
+  "caption": "아침마다 목 찢어질 것처럼 건조해서 가습기 틀었더니, 이번엔 시끄러운 소음 때문에 밤새 설친 적 있으시죠? 🥲\n\n진동 소리나 물방울 소리 없이 세상 조용하게 방 안을 촉촉한 공기로 채워주는 저소음 가습기입니다.\n\n이제 귀 아픈 소음 스트레스 없이 꿀잠 자면서 환절기 목 건강까지 편안하게 챙겨보세요! ✨\n\n제품 정보는 프로필 링크에서 확인하실 수 있습니다.",
+  "hashtags": [
+    "인스타툰",
+    "일상툰",
+    "가습기추천",
+    "저소음가습기",
+    "꿀잠템",
+    "환절기필수템",
+    "자취생필수템",
+    "방꾸미기"
+  ],
+  "disclosure": "이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따라 일정액의 수수료를 제공받습니다."
+}

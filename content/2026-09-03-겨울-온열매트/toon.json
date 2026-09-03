@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "id": "2026-09-03-겨울-온열매트",
+    "keyword": "겨울 온열매트",
+    "created_at": "2026-09-03",
+    "made_by": "gemini",
+    "schema_version": 1,
+    "status": "draft"
+  },
+  "product": {
+    "name": "겨울 온열매트",
+    "category": "",
+    "affiliate": {
+      "platform": "coupang",
+      "url": "",
+      "landing": "linkinbio",
+      "note": "인스타 캡션·댓글의 URL은 클릭이 안 된다. 반드시 프로필 링크로 유도할 것."
+    }
+  },
+  "plan": {
+    "persona": "겨울철 퇴근 후 얼어붙은 방에서 추위에 떠는 1인 가구 자취생",
+    "pain": "보일러를 틀어도 침대 속이 얼음장 같아서 눕자마자 소스라치게 놀라고 잠들기 힘듦",
+    "hook": "깨끗하게 씻고 침대에 누웠는데 이불 속이 냉동실 같을 때의 찰나의 충격",
+    "angle": "전원 켜자마자 온몸을 사르르 녹여주는 포근하고 안전한 온열매트",
+    "cta": "오늘 밤부턴 추위에 떨지 말고 따뜻하게 꿀잠 자자"
+  },
+  "character": {
+    "ref": "assets/character/main_front.png",
+    "prompt_prefix": "webtoon style, flat vector illustration, clean bold outlines, cozy but muted colors, Korean webtoon aesthetic, single consistent character: a young Korean woman with a messy bun, wearing oversized gray pajamas"
+  },
+  "format": {
+    "canvas": [
+      1080,
+      1350
+    ],
+    "cut_count": 6
+  },
+  "cuts": [
+    {
+      "n": 1,
+      "role": "hook",
+      "scene": "씻고 나와 기분 좋게 침대 속으로 들어갔다가 너무 차가운 이불 온도에 소스라치게 놀라며 몸이 굳어버린 표정. 차가운 푸른빛 조명.",
+      "dialogue": "으악, 이불 속이 왜 이렇게 차가워?!",
+      "balloon": {
+        "pos": "top-right",
+        "tail": "down-left"
+      },
+      "image_prompt": "jumping in surprise under blankets, freezing temperature feel, shivering, cold dark blue bedroom lighting, winter night"
+    },
+    {
+      "n": 2,
+      "role": "problem",
+      "scene": "추위를 참아보려고 몸을 한껏 웅크리고 이불을 꽁꽁 싸맸지만 발끝이 시려 얼굴을 잔뜩 찌푸린 모습.",
+      "dialogue": "발끝이 시려서 도저히 잠이 안 와...",
+      "balloon": {
+        "pos": "bottom-left",
+        "tail": "up-right"
+      },
+      "image_prompt": "curled up in a tight ball under a thick blanket, shivering, cold feet, unhappy facial expression, dark bedroom setting"
+    },
+    {
+      "n": 3,
+      "role": "escalation",
+      "scene": "새벽 3시에 추위 때문에 결국 잠에서 깨어 이불을 머리까지 뒤집어쓰고 괴로워하는 모습. 휑한 눈자위.",
+      "dialogue": "나 오늘 밤 잘 수 있긴 한 걸까...",
+      "balloon": {
+        "pos": "top-left",
+        "tail": "down-right"
+      },
+      "image_prompt": "sitting up in bed, wrapped like a burrito in blankets, looking exhausted with dark circles under eyes, clock showing 3:00 AM, cold shivering atmosphere"
+    },
+    {
+      "n": 4,
+      "role": "turn",
+      "scene": "인기 있는 온열매트를 침대에 깔고 콘센트를 꽂는 모습. 매트 주변으로 따뜻한 주황색 불빛이 은은하게 번지기 시작함.",
+      "dialogue": "이게 그렇게 신세계라던데...",
+      "balloon": {
+        "pos": "bottom-right",
+        "tail": "up-left"
+      },
+      "image_prompt": "plugging in and turning on a sleek modern heated mattress pad on the bed, a soft warm orange glow starting to radiate, hopeful expression"
+    },
+    {
+      "n": 5,
+      "role": "solution",
+      "scene": "따뜻해진 침대에 누워 온몸의 긴장이 풀린 채 세상을 다 가진 듯 행복한 표정으로 눈을 감고 있는 모습. 방 전체가 포근한 파스텔 톤.",
+      "dialogue": "흐아아... 온몸이 사르르 녹는다...",
+      "balloon": {
+        "pos": "top-right",
+        "tail": "down-left"
+      },
+      "image_prompt": "lying flat on the bed, smiling blissfully, completely relaxed and warm, soft warm golden lighting, peaceful sleep atmosphere"
+    },
+    {
+      "n": 6,
+      "role": "cta",
+      "scene": "다음 날 아침, 개운하고 맑은 얼굴로 기지개를 켜며 활짝 웃는 모습. 창문 사이로 따스한 아침 햇살이 비침.",
+      "dialogue": "오늘 밤부턴 덜덜 떨지 마세요!",
+      "balloon": {
+        "pos": "bottom-left",
+        "tail": "up-right"
+      },
+      "image_prompt": "waking up happy, stretching arms wide, bright morning sunlight pouring through the window, cozy and cheerful bedroom"
+    }
+  ],
+  "caption": "겨울철 퇴근 후 차가운 침대에 누울 때가 제일 무서운 분? 🥶 이불 속에 들어가서 발끝 녹을 때까지 오들오들 떨던 밤은 이제 안녕! 눕자마자 온몸이 따뜻하게 녹아내리는 겨울 꿀잠 필수템을 소개합니다. 은은하고 포근한 온기로 매일 아침 개운하게 일어나 보세요. 🛌✨ 올겨울 추위 극복 온열매트 정보는 프로필 링크에서 확인하실 수 있습니다!",
+  "hashtags": [
+    "겨울필수템",
+    "온열매트",
+    "전기매트",
+    "꿀잠템",
+    "자취방꾸미기",
+    "인스타툰",
+    "한파대비",
+    "침구추천"
+  ],
+  "disclosure": "이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따라 일정액의 수수료를 제공받습니다."
+}

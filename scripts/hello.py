@@ -22,7 +22,7 @@ try:
 except ImportError:
     pass
 
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
 # --- 1단계: 키가 있는지 ----------------------------------------------------

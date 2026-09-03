@@ -40,7 +40,7 @@ fi
 DATE="$(date +%Y-%m-%d)"
 DATETIME="$(date '+%Y-%m-%d %H:%M')"
 SUBJECT="$(git log -1 --pretty=%s 2>/dev/null)"
-FILES="$(git show --stat --oneline --name-only --pretty=format: HEAD 2>/dev/null | sed '/^$/d' | head -20)"
+FILES="$(git -c core.quotepath=false show --stat --oneline --name-only --pretty=format: HEAD 2>/dev/null | sed '/^$/d' | head -20)"
 [ -n "$FILES" ] || FILES="(변경 파일 없음)"
 
 # 기록용 파일만 고친 커밋에는 일지를 또 만들지 않는다.

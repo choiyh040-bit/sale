@@ -33,10 +33,33 @@
 
 ## 기술 스택
 
-- 콘티 생성: Claude API — `claude-opus-5` (품질 안정되면 `claude-sonnet-5` 로 비용 절감)
+원안은 **단계별로 잘하는 LLM을 나눠 쓰는 분업 구조**다. 한 모델이 다 하지 않는다.
+
+| 단계 | 원안 담당 | 지금 실제 |
+|---|---|---|
+| 트렌드 소싱 | 그록 (X 실시간) | 🔴 API 차단 → **폰 앱으로 수동** |
+| 소재 앵글 | GPT | 🔴 API 차단 |
+| **콘티 생성** | **Claude** (`claude-opus-5` → 안정되면 `claude-sonnet-5`) | ⚠️ **Gemini 로 임시 운영** |
+
+> ⚠️ **콘티 담당이 문서(Claude)와 코드(Gemini)에서 다르다.** Phase 0 에서 확보된 키가
+> Gemini 뿐이라 급히 갈아탄 것이고 최종 상태가 아니다. `api.anthropic.com` 은 도달하므로
+> 앤트로픽 키만 넣으면 원복 가능 → **Phase 11**. 코드를 고칠 땐 이 임시성을 전제로 볼 것.
+
 - 합성: Python + Pillow (한글 폰트는 상업적 이용 가능한 것만)
+- 승인 알림: 텔레그램 봇 (**Phase 10**, 원안 항목) — 🔴 정책 차단
 - 오케스트레이션: n8n (Docker, **Phase 6에서 도입** — 그전엔 파이썬 스크립트로 충분)
-- 발행: Instagram Graph API
+- 발행: Instagram Graph API — 🔴 정책 차단
+
+## 네트워크 정책 (작업 전 반드시 인지)
+
+이 컨테이너는 **정책 프록시** 뒤에 있다. 도달하는 건 **Anthropic·Google 둘뿐**이고
+그록·GPT·쿠팡·인스타·텔레그램·슬랙은 전부 `403 policy denial` 로 막힌다.
+
+- 외부 API 를 붙이는 작업 전에 **먼저 도달 여부를 확인**한다. 코드부터 짜지 않는다.
+- 막혀 있으면 **우회하지 않는다.** TLS 검증을 끄거나 프록시를 벗어나려 하지 말 것.
+  사용자에게 "환경 설정 → 네트워크 정책" 에서 열어야 한다고 보고한다.
+- 진단: `curl -sS "$HTTPS_PROXY/__agentproxy/status"` → `recentRelayFailures` 확인.
+- 상세 표는 `docs/MASTER_PLAN.md` 4-0절.
 
 ## 놓치면 안 되는 함정
 

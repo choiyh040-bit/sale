@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "updated": "2026-09-03",
+  "items": [
+    {
+      "keyword": "겨울 온열매트",
+      "why": "한파 시즌 난방비 화제",
+      "heat": "상",
+      "source": "manual",
+      "coupang": true,
+      "status": "doing",
+      "added": "2026-09-03",
+      "note": "콘티 완료. 작화 대기"
+    },
+    {
+      "keyword": "무선 핸디 청소기",
+      "why": "차량·틈새 청소 수요",
+      "heat": "중",
+      "source": "manual",
+      "coupang": true,
+      "status": "doing",
+      "added": "2026-09-03",
+      "note": "콘티 완료. 작화 대기"
+    },
+    {
+      "keyword": "저소음 가습기",
+      "why": "건조 시즌",
+      "heat": "중",
+      "source": "manual",
+      "coupang": true,
+      "status": "doing",
+      "added": "2026-09-03",
+      "note": "콘티 완료. 작화 대기"
+    }
+  ]
+}

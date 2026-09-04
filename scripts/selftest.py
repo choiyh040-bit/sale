@@ -97,6 +97,32 @@ def main():
     _, warns = M.validate(t)
     check("인스타 캡션 링크 경고", any("URL" in w for w in warns))
 
+    print("\n=== 소재 큐 (Phase 9) ===")
+    import queue as Q
+
+    check("한글 폭 계산 (한글 2칸)", Q.w("겨울") == 4 and Q.w("ab") == 2)
+    check("한글 표 정렬", len(Q.pad("겨울", 10)) == 10 - 4 + len("겨울"))
+
+    qf = Path("content/queue.json")
+    if qf.exists():
+        qd = json.loads(qf.read_text(encoding="utf-8"))
+        items = qd.get("items", [])
+        check("queue.json 파싱됨", isinstance(items, list))
+        check("스키마 버전 일치", qd.get("schema_version") == Q.SCHEMA_VERSION)
+        need = {"keyword", "status", "coupang", "added", "source", "heat"}
+        check("모든 항목이 필수 필드를 가짐",
+              all(need <= set(i) for i in items))
+        check("status 값이 정의된 것뿐",
+              all(i["status"] in Q.STATUSES for i in items))
+        check("source 값이 정의된 것뿐",
+              all(i["source"] in Q.SOURCES for i in items))
+        check("heat 값이 정의된 것뿐",
+              all(i["heat"] in Q.HEATS for i in items))
+        check("키워드 중복 없음",
+              len({i["keyword"] for i in items}) == len(items))
+    else:
+        check("queue.json 존재", False)
+
     print(f"\n{'=' * 46}")
     print(f"통과 {_ok} / 실패 {_fail}")
     sys.exit(1 if _fail else 0)

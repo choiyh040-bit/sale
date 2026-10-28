@@ -243,9 +243,12 @@ def main():
 
     toon = json.loads(toon_path.read_text(encoding="utf-8"))
 
+    # 제휴 링크가 있는 툰에만 고지 문구가 있다. 없으면 안 그린다.
+    # 링크가 있는데 고지가 비어 있으면 그건 막아야 한다 (표시광고법).
     disclosure = toon.get("disclosure", "").strip()
-    if not disclosure:
-        print("❌ toon.json 에 disclosure(제휴 고지 문구)가 비어 있습니다.")
+    link = toon.get("product", {}).get("affiliate", {}).get("url", "").strip()
+    if link and not disclosure:
+        print("❌ 제휴 링크가 있는데 고지 문구(disclosure)가 비어 있습니다.")
         print("   제휴 게시물의 고지는 법적 의무라 없으면 만들지 않습니다.")
         sys.exit(1)
 

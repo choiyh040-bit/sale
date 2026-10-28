@@ -23,10 +23,16 @@ from pathlib import Path
 # --- 코드가 책임지는 값 -----------------------------------------------------
 # 제휴 고지 문구는 법으로 정해진 문장이라 LLM 에게 맡기지 않는다.
 # 한 글자라도 바뀌면 안 되므로 여기 고정한다.
-DISCLOSURE = (
-    "이 게시물은 쿠팡 파트너스 활동의 일환으로, "
-    "이에 따라 일정액의 수수료를 제공받습니다."
-)
+#
+# ⚠️ 제휴 링크가 있을 때만 넣는다. 링크도 없는 툰에 "수수료를 받습니다" 를 붙이면
+#    사실이 아니고, 막 시작한 계정이 광고 계정으로 보여 팔로워를 잃는다.
+#    (2026-10-26 결정: 상품 툰은 팔로워가 쌓인 뒤로 미룸 — CLAUDE.md 연결 계정 절)
+DISCLOSURE = {
+    "coupang": ("이 게시물은 쿠팡 파트너스 활동의 일환으로, "
+                "이에 따라 일정액의 수수료를 제공받습니다."),
+    "toss": ("이 포스팅은 토스쇼핑 쉐어링크 활동의 일환으로, "
+             "이에 따른 일정액의 수수료를 제공받습니다."),
+}
 
 CANVAS = [1080, 1350]
 SCHEMA_VERSION = 1
@@ -138,8 +144,16 @@ def validate(toon):
     if not 4 <= len(cuts) <= 8:
         errors.append(f"컷 수가 {len(cuts)}개입니다. 4~8개여야 합니다.")
 
-    if not toon.get("disclosure", "").strip():
-        errors.append("제휴 고지 문구(disclosure)가 비어 있습니다.")
+    # 고지 문구는 제휴 링크와 짝이다. 한쪽만 있으면 둘 다 문제다.
+    link = toon.get("product", {}).get("affiliate", {}).get("url", "").strip()
+    disc = toon.get("disclosure", "").strip()
+    if link and not disc:
+        errors.append("제휴 링크가 있는데 고지 문구(disclosure)가 없습니다. 표시광고법 위반입니다.")
+    if disc and not link:
+        errors.append(
+            "제휴 링크가 없는데 고지 문구가 들어 있습니다. "
+            "수수료를 받지 않는 글에 '수수료를 받습니다' 라고 쓰면 거짓입니다."
+        )
 
     for c in cuts:
         n = c.get("n", "?")
@@ -176,7 +190,7 @@ def validate(toon):
     return errors, warns
 
 
-def build_toon(keyword, data, cut_count):
+def build_toon(keyword, data, cut_count, link="", platform="coupang"):
     """LLM 이 만든 부분과 코드가 정하는 부분을 합쳐 완성된 toon 을 만든다."""
     slug = slugify(keyword)
     toon_id = f"{date.today().isoformat()}-{slug}"
@@ -198,10 +212,10 @@ def build_toon(keyword, data, cut_count):
             "name": keyword,
             "category": "",
             "affiliate": {
-                "platform": "coupang",
-                "url": "",
-                "landing": "linkinbio",
-                "note": "인스타 캡션·댓글의 URL은 클릭이 안 된다. 반드시 프로필 링크로 유도할 것.",
+                "platform": platform,
+                "url": link,
+                "landing": "first_reply",
+                "note": "스레드는 첫 댓글 링크가 클릭된다. 링크는 첫 댓글에, 고지는 본문에.",
             },
         },
         "plan": data["plan"],
@@ -213,7 +227,8 @@ def build_toon(keyword, data, cut_count):
         "cuts": cuts,
         "caption": data["caption"],
         "hashtags": data["hashtags"],
-        "disclosure": DISCLOSURE,   # ← 코드가 넣는다. LLM 이 쓰게 두지 않는다.
+        # 링크가 있을 때만 넣는다. 없으면 빈 문자열 — 없는 제휴를 있다고 하지 않는다.
+        "disclosure": DISCLOSURE[platform] if link else "",
     }
 
 
@@ -288,6 +303,11 @@ def main():
     ap = argparse.ArgumentParser(description="키워드로 인스타툰 콘티를 만든다")
     ap.add_argument("keyword", nargs="?", help="상품 키워드 (예: '겨울 온열매트')")
     ap.add_argument("--cuts", type=int, default=6, help="컷 수 (4~8, 기본 6)")
+    ap.add_argument("--link", default="",
+                    help="제휴 링크. 넣으면 고지 문구가 함께 들어간다. "
+                         "안 넣으면 제휴 없는 순수 툰이 된다(기본)")
+    ap.add_argument("--platform", default="coupang", choices=sorted(DISCLOSURE),
+                    help="제휴 플랫폼. --link 를 줄 때만 의미가 있다")
     ap.add_argument("--model", default=DEFAULT_MODEL, help=f"모델 이름 (기본 {DEFAULT_MODEL})")
     ap.add_argument("--list-models", action="store_true", help="쓸 수 있는 모델 이름 출력")
     args = ap.parse_args()
@@ -333,7 +353,7 @@ def main():
         sys.exit(1)
 
     data = json.loads(resp.text)
-    toon = build_toon(args.keyword, data, args.cuts)
+    toon = build_toon(args.keyword, data, args.cuts, args.link, args.platform)
 
     errors, warns = validate(toon)
     for w in warns:

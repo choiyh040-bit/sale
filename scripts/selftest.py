@@ -85,11 +85,42 @@ def main():
         "caption": "c", "hashtags": ["#a"],
         "disclosure": "LLM 이 지어낸 가짜 고지 문구",
     }
-    built = M.build_toon("겨울 온열매트", fake, 6)
-    check("법정 문구로 고정됨", built["disclosure"] == M.DISCLOSURE)
-    check("LLM 이 넣은 문구가 무시됨", "지어낸" not in built["disclosure"])
-    check("컷 번호 재부여 (1..6)", [c["n"] for c in built["cuts"]] == [1, 2, 3, 4, 5, 6])
+    # 제휴 링크가 있을 때 — 고지가 법정 문구로 들어가야 한다
+    paid = M.build_toon("겨울 온열매트", fake, 6, link="https://link.coupang.com/x")
+    check("링크 있으면 법정 문구로 고정됨", paid["disclosure"] == M.DISCLOSURE["coupang"])
+    check("LLM 이 넣은 문구가 무시됨", "지어낸" not in paid["disclosure"])
+    check("토스 문구도 선택됨",
+          M.build_toon("k", fake, 6, link="https://toss.shopping/x",
+                       platform="toss")["disclosure"] == M.DISCLOSURE["toss"])
+
+    # 제휴 링크가 없을 때 — 고지가 비어 있어야 한다 (없는 제휴를 있다고 하지 않는다)
+    free = M.build_toon("겨울 온열매트", fake, 6)
+    check("링크 없으면 고지가 비어 있음", free["disclosure"] == "")
+    check("링크 없으면 affiliate.url 도 빔",
+          free["product"]["affiliate"]["url"] == "")
+
+    check("컷 번호 재부여 (1..6)", [c["n"] for c in paid["cuts"]] == [1, 2, 3, 4, 5, 6])
     check("컷 수 제한 적용", len(M.build_toon("k", fake, 4)["cuts"]) == 4)
+
+    print("\n=== 고지 문구와 제휴 링크는 짝이다 ===")
+    t = copy.deepcopy(real)
+    t["product"]["affiliate"]["url"] = "https://link.coupang.com/x"
+    t["disclosure"] = ""
+    errs, _ = M.validate(t)
+    check("링크 있는데 고지 없음 → 에러", any("표시광고법" in e for e in errs))
+
+    t2 = copy.deepcopy(real)
+    t2["product"]["affiliate"]["url"] = ""
+    t2["disclosure"] = M.DISCLOSURE["coupang"]
+    errs2, _ = M.validate(t2)
+    check("링크 없는데 고지 있음 → 에러", any("거짓" in e for e in errs2))
+
+    t3 = copy.deepcopy(real)
+    t3["product"]["affiliate"]["url"] = ""
+    t3["disclosure"] = ""
+    errs3, _ = M.validate(t3)
+    check("둘 다 없음 → 통과 (순수 툰)",
+          not any("고지" in e or "거짓" in e for e in errs3))
 
     print("\n=== 캡션 URL 경고 ===")
     t = copy.deepcopy(real)

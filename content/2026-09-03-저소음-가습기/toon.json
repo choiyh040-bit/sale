@@ -13,8 +13,8 @@
     "affiliate": {
       "platform": "coupang",
       "url": "",
-      "landing": "linkinbio",
-      "note": "인스타 캡션·댓글의 URL은 클릭이 안 된다. 반드시 프로필 링크로 유도할 것."
+      "landing": "first_reply",
+      "note": "스레드는 첫 댓글 링크가 클릭된다. 링크는 첫 댓글에, 고지는 본문에."
     }
   },
   "plan": {
@@ -114,5 +114,5 @@
     "자취생필수템",
     "방꾸미기"
   ],
-  "disclosure": "이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따라 일정액의 수수료를 제공받습니다."
+  "disclosure": ""
 }

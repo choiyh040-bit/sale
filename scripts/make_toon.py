@@ -144,6 +144,19 @@ def validate(toon):
     if not 4 <= len(cuts) <= 8:
         errors.append(f"컷 수가 {len(cuts)}개입니다. 4~8개여야 합니다.")
 
+    # 발행처는 스레드다. 인스타 시절 문구가 남으면 독자를 엉뚱한 곳으로 보낸다.
+    cap = toon.get("caption", "")
+    tags = " ".join(toon.get("hashtags", []))
+    for word in ("프로필 링크", "프로필의 링크", "링크인바이오", "바이오 링크"):
+        if word in cap:
+            warns.append(
+                f"캡션에 '{word}' 가 있습니다. 스레드는 첫 댓글 링크가 클릭되므로 "
+                "프로필로 유도할 이유가 없습니다."
+            )
+            break
+    if "인스타" in tags or "인스타" in cap:
+        warns.append("'인스타' 가 들어간 문구·태그가 있습니다. 발행처는 스레드입니다.")
+
     # 고지 문구는 제휴 링크와 짝이다. 한쪽만 있으면 둘 다 문제다.
     link = toon.get("product", {}).get("affiliate", {}).get("url", "").strip()
     disc = toon.get("disclosure", "").strip()

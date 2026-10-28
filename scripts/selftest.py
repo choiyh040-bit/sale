@@ -10,6 +10,7 @@ API 를 호출하지 않으므로 돈이 들지 않고, 아무 때나 돌려도 
 
 import copy
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -127,6 +128,46 @@ def main():
     t["caption"] = "구매는 https://link.coupang.com/xxx 에서"
     _, warns = M.validate(t)
     check("인스타 캡션 링크 경고", any("URL" in w for w in warns))
+
+    print("\n=== 발행처는 스레드다 (인스타 흔적 경고) ===")
+    t4 = copy.deepcopy(real)
+    t4["caption"] = "자세한 건 프로필 링크에서 확인하세요!"
+    _, w4 = M.validate(t4)
+    check("'프로필 링크' 유도 → 경고", any("프로필 링크" in w for w in w4))
+
+    t5 = copy.deepcopy(real)
+    t5["hashtags"] = ["인스타툰", "겨울"]
+    _, w5 = M.validate(t5)
+    check("'인스타' 태그 → 경고", any("스레드" in w for w in w5))
+
+    t6 = copy.deepcopy(real)
+    t6["caption"] = "오늘 밤부터 따뜻하게 자요."
+    t6["hashtags"] = ["겨울필수템", "자취방"]
+    _, w6 = M.validate(t6)
+    check("깨끗한 캡션 → 경고 없음",
+          not any("프로필" in w or "스레드" in w for w in w6))
+
+    print("\n=== 이슈 본문 만들기 (Phase 5) ===")
+    import make_issue as I
+
+    check("저장소 주소를 읽음", I.repo_slug() == "choiyh040-bit/sale")
+    cdir = Path("content/2026-09-03-겨울-온열매트")
+    tj = json.loads((cdir / "toon.json").read_text(encoding="utf-8"))
+
+    body, warns, missing = I.build_body(tj, cdir, "choiyh040-bit/sale", "main")
+    check("그림 없는 컷을 전부 찾아냄", missing == [1, 2, 3, 4, 5, 6])
+    check("컷 이미지가 전부 들어감", body.count("raw.githubusercontent.com") == 6)
+    check("캐러셀 순서가 1..6", [int(n) for n in re.findall(r"!\[컷(\d)\]", body)] == [1,2,3,4,5,6])
+    check("링크 없으면 첫 댓글 칸이 없음", I.REPLY_MARK not in body)
+
+    paid_t = copy.deepcopy(tj)
+    paid_t["product"]["affiliate"]["url"] = "https://toss.shopping/_m/XXXX"
+    paid_t["disclosure"] = M.DISCLOSURE["toss"]
+    pbody, _, _ = I.build_body(paid_t, cdir, "choiyh040-bit/sale", "main")
+    check("링크 있으면 첫 댓글 칸이 생김", I.REPLY_MARK in pbody)
+    check("고지는 본문 맨 앞", pbody.startswith(M.DISCLOSURE["toss"]))
+    check("링크는 첫 댓글 아래",
+          pbody.index("toss.shopping") > pbody.index(I.REPLY_MARK))
 
     print("\n=== 소재 큐 (Phase 9) ===")
     import queue as Q

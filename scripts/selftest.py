@@ -142,10 +142,22 @@ def main():
 
     t6 = copy.deepcopy(real)
     t6["caption"] = "오늘 밤부터 따뜻하게 자요."
-    t6["hashtags"] = ["겨울필수템", "자취방"]
+    t6["hashtags"] = ["겨울나기"]          # 스레드는 태그 하나가 기본
     _, w6 = M.validate(t6)
-    check("깨끗한 캡션 → 경고 없음",
-          not any("프로필" in w or "스레드" in w for w in w6))
+    check("깨끗한 캡션 + 태그 1개 → 경고 없음",
+          not any("프로필" in w or "스레드" in w or "태그가" in w for w in w6))
+
+    t7 = copy.deepcopy(real)
+    t7["caption"] = "오늘 밤부터 따뜻하게 자요."
+    t7["hashtags"] = ["겨울필수템", "온열매트", "자취방"]
+    _, w7 = M.validate(t7)
+    check("태그 여러 개 → 경고", any("태그가" in w for w in w7))
+
+    t8 = copy.deepcopy(real)
+    t8["caption"] = "오늘 밤부터 따뜻하게 자요."
+    t8["hashtags"] = []
+    _, w8 = M.validate(t8)
+    check("태그 0개도 괜찮음", not any("태그가" in w for w in w8))
 
     print("\n=== 이슈 본문 만들기 (Phase 5) ===")
     import tempfile

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-09-03",
+  "updated": "2026-10-29",
   "items": [
     {
       "keyword": "겨울 온열매트",
@@ -8,9 +8,9 @@
       "heat": "상",
       "source": "manual",
       "coupang": true,
-      "status": "doing",
+      "status": "drop",
       "added": "2026-09-03",
-      "note": "콘티 완료. 작화 대기"
+      "note": "인스타·상품툰 기획. 2026-10-29 폐기 — 발행처가 스레드로 바뀌었고 상품 툰은 팔로워 1,000명 전후로 보류"
     },
     {
       "keyword": "무선 핸디 청소기",
@@ -18,9 +18,9 @@
       "heat": "중",
       "source": "manual",
       "coupang": true,
-      "status": "doing",
+      "status": "drop",
       "added": "2026-09-03",
-      "note": "콘티 완료. 작화 대기"
+      "note": "인스타·상품툰 기획. 2026-10-29 폐기 — 발행처가 스레드로 바뀌었고 상품 툰은 팔로워 1,000명 전후로 보류"
     },
     {
       "keyword": "저소음 가습기",
@@ -28,9 +28,9 @@
       "heat": "중",
       "source": "manual",
       "coupang": true,
-      "status": "doing",
+      "status": "drop",
       "added": "2026-09-03",
-      "note": "콘티 완료. 작화 대기"
+      "note": "인스타·상품툰 기획. 2026-10-29 폐기 — 발행처가 스레드로 바뀌었고 상품 툰은 팔로워 1,000명 전후로 보류"
     }
   ]
 }

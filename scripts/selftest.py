@@ -148,26 +148,53 @@ def main():
           not any("프로필" in w or "스레드" in w for w in w6))
 
     print("\n=== 이슈 본문 만들기 (Phase 5) ===")
+    import tempfile
     import make_issue as I
 
     check("저장소 주소를 읽음", I.repo_slug() == "choiyh040-bit/sale")
-    cdir = Path("content/2026-09-03-겨울-온열매트")
-    tj = json.loads((cdir / "toon.json").read_text(encoding="utf-8"))
 
-    body, warns, missing = I.build_body(tj, cdir, "choiyh040-bit/sale", "main")
-    check("그림 없는 컷을 전부 찾아냄", missing == [1, 2, 3, 4, 5, 6])
-    check("컷 이미지가 전부 들어감", body.count("raw.githubusercontent.com") == 6)
-    check("캐러셀 순서가 1..6", [int(n) for n in re.findall(r"!\[컷(\d)\]", body)] == [1,2,3,4,5,6])
-    check("링크 없으면 첫 댓글 칸이 없음", I.REPLY_MARK not in body)
+    # 완성 이미지 4장이 있는 임시 폴더를 만들어 검사한다
+    with tempfile.TemporaryDirectory() as td:
+        cdir = Path(td) / "2026-10-29-샘플"
+        (cdir / "art").mkdir(parents=True)
+        for i in (1, 2, 3, 4):
+            (cdir / "art" / f"cut{i}.png").write_bytes(b"x")
 
-    paid_t = copy.deepcopy(tj)
-    paid_t["product"]["affiliate"]["url"] = "https://toss.shopping/_m/XXXX"
-    paid_t["disclosure"] = M.DISCLOSURE["toss"]
-    pbody, _, _ = I.build_body(paid_t, cdir, "choiyh040-bit/sale", "main")
-    check("링크 있으면 첫 댓글 칸이 생김", I.REPLY_MARK in pbody)
-    check("고지는 본문 맨 앞", pbody.startswith(M.DISCLOSURE["toss"]))
-    check("링크는 첫 댓글 아래",
-          pbody.index("toss.shopping") > pbody.index(I.REPLY_MARK))
+        check("art 를 번호 순서로 찾음",
+              [a.name for a in I.find_art(cdir)] ==
+              ["cut1.png", "cut2.png", "cut3.png", "cut4.png"])
+
+        # 번호가 끊기면 거기서 멈춘다 (cut6 만 있으면 안 집는다)
+        (cdir / "art" / "cut6.png").write_bytes(b"x")
+        check("번호가 끊기면 거기서 멈춤", len(I.find_art(cdir)) == 4)
+
+        toon = {"caption": "본문", "hashtags": ["겨울"],
+                "product": {"affiliate": {"url": ""}}, "disclosure": ""}
+        body, warns, arts = I.build_body(toon, cdir, "choiyh040-bit/sale", "main")
+        check("이미지가 전부 본문에 들어감", body.count("raw.githubusercontent.com") == 4)
+        check("캐러셀 순서가 1..4",
+              [int(n) for n in re.findall(r"!\[컷(\d)\]", body)] == [1, 2, 3, 4])
+        check("art 경로를 가리킴", "/art/cut1.png" in body)
+        check("링크 없으면 첫 댓글 칸이 없음", I.REPLY_MARK not in body)
+        check("커밋 안 된 이미지를 경고함", any("커밋" in w for w in warns))
+
+        # --caption 이 toon.json 을 덮어쓰는가
+        b2, _, _ = I.build_body(toon, cdir, "x/y", "main", caption="직접 쓴 본문")
+        check("--caption 이 우선함", b2.startswith("직접 쓴 본문"))
+
+        # 제휴 링크가 있을 때
+        paid = {"caption": "본문", "hashtags": [],
+                "product": {"affiliate": {"url": "https://toss.shopping/_m/X"}},
+                "disclosure": M.DISCLOSURE["toss"]}
+        pbody, _, _ = I.build_body(paid, cdir, "x/y", "main")
+        check("고지는 본문 맨 앞", pbody.startswith(M.DISCLOSURE["toss"]))
+        check("링크는 첫 댓글 아래",
+              pbody.index("toss.shopping") > pbody.index(I.REPLY_MARK))
+
+        # webp 경고
+        (cdir / "art" / "cut5.webp").write_bytes(b"x")
+        _, w5, _ = I.build_body(toon, cdir, "x/y", "main")
+        check("webp 는 경고함", any("webp" in w for w in w5))
 
     print("\n=== 소재 큐 (Phase 9) ===")
     import queue as Q

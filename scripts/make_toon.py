@@ -156,6 +156,11 @@ def validate(toon):
             break
     if "인스타" in tags or "인스타" in cap:
         warns.append("'인스타' 가 들어간 문구·태그가 있습니다. 발행처는 스레드입니다.")
+    if len(toon.get("hashtags", [])) > 1:
+        warns.append(
+            f"태그가 {len(toon['hashtags'])}개입니다. 스레드는 토픽 태그라 글 하나에 "
+            "하나가 기본입니다. 여러 개 쌓아도 첫 번째만 태그로 잡힙니다."
+        )
 
     # 고지 문구는 제휴 링크와 짝이다. 한쪽만 있으면 둘 다 문제다.
     link = toon.get("product", {}).get("affiliate", {}).get("url", "").strip()

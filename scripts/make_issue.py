@@ -36,6 +36,10 @@ from pathlib import Path
 # 스레드 글자 수 제한. link 저장소의 검증된 코드와 같은 값을 쓴다.
 MAX_CHARS = 500
 MAX_CAROUSEL = 20
+
+# 스레드는 인스타식 해시태그가 아니라 토픽 태그다. 글 하나에 하나가 기본이고
+# 여러 개 쌓아도 첫 번째만 태그로 잡힌다. (link 저장소의 실제 게시물도 태그 하나)
+MAX_TAGS = 1
 REPLY_MARK = "=== 첫 댓글 ==="
 
 ART_EXTS = ("png", "jpg", "jpeg", "webp")
@@ -99,6 +103,13 @@ def build_body(toon, content_dir, slug, ref, caption=None, tags=None):
     body_caption = caption if caption is not None else toon.get("caption", "")
     parts.append(body_caption.strip())
     tag_list = tags if tags is not None else toon.get("hashtags", [])
+    if len(tag_list) > MAX_TAGS:
+        dropped = ", ".join(tag_list[MAX_TAGS:])
+        warns.append(
+            f"태그가 {len(tag_list)}개입니다. 스레드는 글 하나에 {MAX_TAGS}개가 기본이라 "
+            f"'{tag_list[0]}' 만 넣고 나머지는 뺐습니다: {dropped}"
+        )
+        tag_list = tag_list[:MAX_TAGS]
     tag_line = " ".join("#" + t.lstrip("#") for t in tag_list)
     if tag_line:
         parts.append(tag_line)
